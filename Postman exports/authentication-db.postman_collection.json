@@ -1,0 +1,1488 @@
+{
+	"info": {
+		"_postman_id": "9af50adc-d181-4bc5-908d-d5ffd7b97073",
+		"name": "authentication-db",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39912256"
+	},
+	"item": [
+		{
+			"name": "1. Register functionality",
+			"item": [
+				{
+					"name": "1.1. Successful register scenario",
+					"item": [
+						{
+							"name": "1.1.1. Register  new unique user",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"let uniqueValue = Date.now();\r",
+											"\r",
+											"let baseEmail = `email_${uniqueValue}@gmail.com`\r",
+											"let baseSurname = \"surname\";\r",
+											"let baseTitle = [\"Mr\", \"Mrs\",\"Miss\", \"Ms\", \"Dr\",\"Prof\", \"Prof.Dr\"]\r",
+											"let basePassword = \"password\";\r",
+											"\r",
+											"const randomTitle = baseTitle[Math.floor(Math.random() * baseTitle.length)];\r",
+											"\r",
+											"let uniqueEmail = `${baseEmail}`;\r",
+											"let uniqueSurname = `${baseSurname}_${uniqueValue}`;\r",
+											"let uniqueTitle = `${randomTitle}`;\r",
+											"let uniquePassword = `${basePassword}_${uniqueValue}`;\r",
+											"\r",
+											"pm.collectionVariables.set(\"emailToCreate\", uniqueEmail);\r",
+											"pm.collectionVariables.set(\"surnameToCreate\", uniqueSurname);\r",
+											"pm.collectionVariables.set(\"titleToCreate\", uniqueTitle);\r",
+											"pm.collectionVariables.set(\"passwordToCreate\", uniquePassword);\r",
+											"\r",
+											"let requestBody = {\r",
+											"    \"email\": uniqueEmail,\r",
+											"    \"surname\": uniqueSurname,\r",
+											"    \"title\": uniqueTitle,\r",
+											"    \"password\": uniquePassword\r",
+											"}\r",
+											"\r",
+											"pm.request.body.raw = JSON.stringify(requestBody);\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response username and password matches registrated\"), function(){\r",
+											"    responseData = pm.response.jsnon();\r",
+											"    registratedUsername = pm.collectionVariables.get(\"surnameToCreate\")\r",
+											"    registratedPassword = pm.collectionVariables.get(\"passwordToCreate\")\r",
+											"    registratedPassword = pm.collectionVariables.get(\"titleToCreate\")\r",
+											"    registratedPassword = pm.collectionVariables.get(\"emailToCreate\")\r",
+											"    pm.expect(responseData.email).to.be.eq(registratedEmail);\r",
+											"    pm.expect(responseData.surname).to.be.eq(registratedSurname);\r",
+											"    pm.expect(responseData.title).to.be.eq(registratedTitle);\r",
+											"    pm.expect(responseData.password).to.be.eq(registratedPassword);\r",
+											"}\r",
+											"\r",
+											"pm.test(\"Response status code is 201\", function () {\r",
+											"    pm.expect(pm.response.code).to.equal(201);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response has the required fields\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData).to.have.property('user');\r",
+											"    const user = responseData.user;\r",
+											"    \r",
+											"    const requiredFields = ['id', 'email', 'surname', 'title', 'password', 'created_at', 'updated_at'];\r",
+											"    requiredFields.forEach(field => {\r",
+											"        pm.expect(user).to.have.property(field);\r",
+											"    });\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Email is in a valid format\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData.user.email).to.be.a('string').and.to.match(/[^@ \\t\\r\\n]+@[^@ \\t\\r\\n]+\\.[^@ \\t\\r\\n]+/, \"Email format is not valid\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Created_at and updated_at are in valid date format\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData.user.created_at).to.match(/\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}/);\r",
+											"    pm.expect(responseData.user.updated_at).to.match(/\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}/);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response time is less than 500ms\", function () {\r",
+											"  pm.expect(pm.response.responseTime).to.be.below(500);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/register",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"register"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "1.2. Unsuccessful registration scenario",
+					"item": [
+						{
+							"name": "1.2.1. Register  new unique user, no email",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"let uniqueValue = Date.now();\r",
+											"\r",
+											"let baseSurname = \"surname\";\r",
+											"let baseTitle = [\"Mr\", \"Mrs\",\"Miss\", \"Ms\", \"Dr\",\"Prof\", \"Prof.Dr\"]\r",
+											"let basePassword = \"password\";\r",
+											"\r",
+											"const randomTitle = baseTitle[Math.floor(Math.random() * baseTitle.length)];\r",
+											"\r",
+											"let uniqueSurname = `${baseSurname}_${uniqueValue}`;\r",
+											"let uniqueTitle = `${randomTitle}`;\r",
+											"let uniquePassword = `${basePassword}_${uniqueValue}`;\r",
+											"\r",
+											"pm.collectionVariables.set(\"surnameToCreate\", uniqueSurname);\r",
+											"pm.collectionVariables.set(\"titleToCreate\", uniqueTitle);\r",
+											"pm.collectionVariables.set(\"passwordToCreate\", uniquePassword);\r",
+											"\r",
+											"let requestBody = {\r",
+											"    \"surname\": uniqueSurname,\r",
+											"    \"title\": uniqueTitle,\r",
+											"    \"password\": uniquePassword\r",
+											"}\r",
+											"\r",
+											"pm.request.body.raw = JSON.stringify(requestBody);\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 400\", function () {\r",
+											"  pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response has the required field - message\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.have.property('message');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response time is less than 500ms\", function () {\r",
+											"  pm.expect(pm.response.responseTime).to.be.below(500);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Content-Type header is application/json\", function () {\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response schema matches the expected structure\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData).to.have.property('message');\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/register",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"register"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "2. Login functionality",
+			"item": [
+				{
+					"name": "2.1. Successful login scenario",
+					"item": [
+						{
+							"name": "2.1.1. Register  new unique user for login",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"let uniqueValue = Date.now();\r",
+											"\r",
+											"let baseEmail = `email_${uniqueValue}@gmail.com`\r",
+											"let baseSurname = \"surname\";\r",
+											"let baseTitle = [\"Mr\", \"Mrs\",\"Miss\", \"Ms\", \"Dr\",\"Prof\", \"Prof.Dr\"]\r",
+											"let basePassword = \"password\";\r",
+											"\r",
+											"const randomTitle = baseTitle[Math.floor(Math.random() * baseTitle.length)];\r",
+											"\r",
+											"let uniqueEmail = `${baseEmail}`;\r",
+											"let uniqueSurname = `${baseSurname}_${uniqueValue}`;\r",
+											"let uniqueTitle = `${randomTitle}`;\r",
+											"let uniquePassword = `${basePassword}_${uniqueValue}`;\r",
+											"\r",
+											"pm.collectionVariables.set(\"emailToCreateForLogin\", uniqueEmail);\r",
+											"pm.collectionVariables.set(\"surnameToCreateForLogin\", uniqueSurname);\r",
+											"pm.collectionVariables.set(\"titleToCreateForLogin\", uniqueTitle);\r",
+											"pm.collectionVariables.set(\"passwordToCreateForLogin\", uniquePassword);\r",
+											"\r",
+											"let requestBody = {\r",
+											"    \"email\": uniqueEmail,\r",
+											"    \"surname\": uniqueSurname,\r",
+											"    \"title\": uniqueTitle,\r",
+											"    \"password\": uniquePassword\r",
+											"}\r",
+											"\r",
+											"pm.request.body.raw = JSON.stringify(requestBody);\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 201\", function () {\r",
+											"    pm.expect(pm.response.code).to.equal(201);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response has the required fields\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData).to.have.property('user');\r",
+											"    const user = responseData.user;\r",
+											"    \r",
+											"    const requiredFields = ['id', 'email', 'surname', 'title', 'password', 'created_at', 'updated_at'];\r",
+											"    requiredFields.forEach(field => {\r",
+											"        pm.expect(user).to.have.property(field);\r",
+											"    });\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Email is in a valid format\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData.user.email).to.be.a('string').and.to.match(/[^@ \\t\\r\\n]+@[^@ \\t\\r\\n]+\\.[^@ \\t\\r\\n]+/, \"Email format is not valid\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Created_at and updated_at are in valid date format\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData.user.created_at).to.match(/\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}/);\r",
+											"    pm.expect(responseData.user.updated_at).to.match(/\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}/);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response time is less than 500ms\", function () {\r",
+											"  pm.expect(pm.response.responseTime).to.be.below(500);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "\r\n{\r\n   \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/register",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "2.1.2. Login user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response time is less than 200ms\", function () {\r",
+											"  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response has the required fields - message and token\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  \r",
+											"  pm.expect(responseData).to.be.an('object');\r",
+											"  pm.expect(responseData.message).to.exist;\r",
+											"  pm.expect(responseData.token).to.exist;\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Message is a non-empty string\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  \r",
+											"  pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Token is a non-empty string\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData.token).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Token should not be empty\");\r",
+											"});\r",
+											"\r",
+											"// Check if the response contains the token\r",
+											"if (pm.response.code === 200) {\r",
+											"    let jsonData = pm.response.json();\r",
+											"\r",
+											"    if (jsonData.token) {\r",
+											"        // Save the token in a collection variable\r",
+											"        pm.collectionVariables.set(\"authToken\", jsonData.token);\r",
+											"        console.log(`Token saved: ${jsonData.token}`);\r",
+											"    } else {\r",
+											"        console.error(\"Token not found in the response.\");\r",
+											"        throw new Error(\"Token not found in the response.\");\r",
+											"    }\r",
+											"} else {\r",
+											"    console.error(\"Login failed, unable to save token.\");\r",
+											"    throw new Error(\"Login failed.\");\r",
+											"}\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "\r\n{\r\n    \"email\": \"{{emailToCreateForLogin}}\",\r\n    \"password\": \"{{passwordToCreateForLogin}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "2.2. Unsuccessful login scenario",
+					"item": [
+						{
+							"name": "2.2.1 Login user, no email",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 400\", function () {\r",
+											"  pm.expect(pm.response.code).to.equal(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response has the required field - message\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.have.property('message');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Content-Type header is application/json\", function () {\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response time is within an acceptable range\", function () {\r",
+											"  pm.expect(pm.response.responseTime).to.be.below(500);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "\r\n{\r\n    \"password\": \"{{passwordToCreateForLogin}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "2.2.2. Login with not existing user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 401\", function () {\r",
+											"    pm.expect(pm.response.code).to.equal(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response has the required Content-Type header set to application/json\", function () {\r",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response has the required fields\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData.message).to.exist;\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Message is a non-empty string\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  \r",
+											"  pm.expect(responseData.message).to.exist.and.to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response time is less than 500ms\", function () {\r",
+											"  pm.expect(pm.response.responseTime).to.be.below(500);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"google@gmail.com\",\r\n    \"password\": \"12345\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "3. Update functionality",
+			"item": [
+				{
+					"name": "3.1. Successful email update scenario",
+					"item": [
+						{
+							"name": "3.1.1. Register  new unique user for Update",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"let uniqueValue = Date.now();\r",
+											"\r",
+											"let baseEmail = `email_${uniqueValue}@gmail.com`\r",
+											"let baseSurname = \"surname\";\r",
+											"let baseTitle = [\"Mr\", \"Mrs\",\"Miss\", \"Ms\", \"Dr\",\"Prof\", \"Prof.Dr\"]\r",
+											"let basePassword = \"password\";\r",
+											"\r",
+											"const randomTitle = baseTitle[Math.floor(Math.random() * baseTitle.length)];\r",
+											"\r",
+											"let uniqueEmail = `${baseEmail}`;\r",
+											"let uniqueSurname = `${baseSurname}_${uniqueValue}`;\r",
+											"let uniqueTitle = `${randomTitle}`;\r",
+											"let uniquePassword = `${basePassword}_${uniqueValue}`;\r",
+											"\r",
+											"pm.collectionVariables.set(\"emailToCreateForUpdate\", uniqueEmail);\r",
+											"pm.collectionVariables.set(\"surnameToCreateForUpdate\", uniqueSurname);\r",
+											"pm.collectionVariables.set(\"titleToCreateForUpdate\", uniqueTitle);\r",
+											"pm.collectionVariables.set(\"passwordToCreateForUpdate\", uniquePassword);\r",
+											"\r",
+											"// pm.collectionVariables.set(\"password\",)\r",
+											"let requestBody = {\r",
+											"    \"email\": uniqueEmail,\r",
+											"    \"surname\": uniqueSurname,\r",
+											"    \"title\": uniqueTitle,\r",
+											"    \"password\": uniquePassword\r",
+											"}\r",
+											"\r",
+											"// Set the modified body back to the request\r",
+											"pm.request.body.raw = JSON.stringify(requestBody);\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 201\", function () {\r",
+											"    pm.expect(pm.response.code).to.equal(201);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response has the required fields\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData).to.have.property('user');\r",
+											"    const user = responseData.user;\r",
+											"    \r",
+											"    const requiredFields = ['id', 'email', 'surname', 'title', 'password', 'created_at', 'updated_at'];\r",
+											"    requiredFields.forEach(field => {\r",
+											"        pm.expect(user).to.have.property(field);\r",
+											"    });\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Email is in a valid format\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData.user.email).to.be.a('string').and.to.match(/[^@ \\t\\r\\n]+@[^@ \\t\\r\\n]+\\.[^@ \\t\\r\\n]+/, \"Email format is not valid\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Created_at and updated_at are in valid date format\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData.user.created_at).to.match(/\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}/);\r",
+											"    pm.expect(responseData.user.updated_at).to.match(/\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}/);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response time is less than 500ms\", function () {\r",
+											"  pm.expect(pm.response.responseTime).to.be.below(500);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "\r\n{\r\n   \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/register",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.1.2. Login user  for update",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response time is less than 200ms\", function () {\r",
+											"  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response has the required fields - message and token\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  \r",
+											"  pm.expect(responseData).to.be.an('object');\r",
+											"  pm.expect(responseData.message).to.exist;\r",
+											"  pm.expect(responseData.token).to.exist;\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Message is a non-empty string\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  \r",
+											"  pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Token is a non-empty string\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData.token).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Token should not be empty\");\r",
+											"});\r",
+											"\r",
+											"// Check if the response contains the token\r",
+											"if (pm.response.code === 200) {\r",
+											"    let jsonData = pm.response.json();\r",
+											"\r",
+											"    if (jsonData.token) {\r",
+											"        // Save the token in a collection variable\r",
+											"        pm.collectionVariables.set(\"authToken\", jsonData.token);\r",
+											"        console.log(`Token saved: ${jsonData.token}`);\r",
+											"    } else {\r",
+											"        console.error(\"Token not found in the response.\");\r",
+											"        throw new Error(\"Token not found in the response.\");\r",
+											"    }\r",
+											"} else {\r",
+											"    console.error(\"Login failed, unable to save token.\");\r",
+											"    throw new Error(\"Login failed.\");\r",
+											"}\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"{{emailToCreateForUpdate}}\",\r\n    \"password\": \"{{passwordToCreateForUpdate}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.1.3. Update user email",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"let uniqueValue = Date.now();\r",
+											"\r",
+											"let baseEmail = `updated_email_${uniqueValue}@gmail.com`;\r",
+											"\r",
+											"pm.collectionVariables.set(\"updatedEmail\", baseEmail);\r",
+											"\r",
+											"let requestBody = JSON.parse(pm.request.body.raw);\r",
+											"\r",
+											"requestBody.email = baseEmail;\r",
+											"\r",
+											"pm.request.body.raw = JSON.stringify(requestBody);\r",
+											"\r",
+											"let token = pm.collectionVariables.get(\"authToken\");\r",
+											"\r",
+											"if (!token) {\r",
+											"    console.error(\"No token found. Ensure to log in before making this request.\");\r",
+											"    throw new Error(\"No authToken variable found.\");\r",
+											"}\r",
+											"\r",
+											"pm.request.headers.add({\r",
+											"    key: \"Authorization\",\r",
+											"    value: `Bearer ${token}`\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response time is within an acceptable range\", function () {\r",
+											"  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response has the required fields\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData.user.id).to.exist;\r",
+											"    pm.expect(responseData.user.email).to.exist;\r",
+											"    pm.expect(responseData.user.surname).to.exist;\r",
+											"    pm.expect(responseData.user.title).to.exist;\r",
+											"    pm.expect(responseData.user.password).to.exist;\r",
+											"    pm.expect(responseData.user.created_at).to.exist;\r",
+											"    pm.expect(responseData.user.updated_at).to.exist;\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Email is in a valid format\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData.user.email).to.be.a('string').and.to.match(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/, \"Email should be in a valid format\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Password is a non-empty string\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData.user.password).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Password should not be empty\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"{{updatedEmail}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/users/22",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"users",
+										"22"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.1.4. Update user title",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"let uniqueValue = Date.now();\r",
+											"\r",
+											"const baseTitle = [\"Mr\", \"Mrs\",\"Miss\", \"Ms\", \"Dr\",\"Prof\", \"Prof.Dr\"];\r",
+											"const randomTitle = baseTitle[Math.floor(Math.random() * baseTitle.length)];\r",
+											"const uniqueTitleForUpdate = `${randomTitle}`;\r",
+											"\r",
+											"pm.collectionVariables.set(\"updatedTitle\", uniqueTitleForUpdate);\r",
+											"\r",
+											"let requestBody = JSON.parse(pm.request.body.raw);\r",
+											"\r",
+											"requestBody.title = uniqueTitleForUpdate;\r",
+											"\r",
+											"pm.request.body.raw = JSON.stringify(requestBody);\r",
+											"\r",
+											"let token = pm.collectionVariables.get(\"authToken\");\r",
+											"\r",
+											"if (!token) {\r",
+											"    console.error(\"No token found. Ensure to log in before making this request.\");\r",
+											"    throw new Error(\"No authToken variable found.\");\r",
+											"}\r",
+											"\r",
+											"pm.request.headers.add({\r",
+											"    key: \"Authorization\",\r",
+											"    value: `Bearer ${token}`\r",
+											"});\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {\r",
+											"    pm.expect(pm.response.code).to.equal(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response time is less than 300ms\", function () {\r",
+											"  pm.expect(pm.response.responseTime).to.be.below(300);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response has the required fields\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData.user.id).to.exist;\r",
+											"    pm.expect(responseData.user.email).to.exist;\r",
+											"    pm.expect(responseData.user.surname).to.exist;\r",
+											"    pm.expect(responseData.user.title).to.exist;\r",
+											"    pm.expect(responseData.user.password).to.exist;\r",
+											"    pm.expect(responseData.user.created_at).to.exist;\r",
+											"    pm.expect(responseData.user.updated_at).to.exist;\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Email is in a valid format\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData.user.email).to.be.a('string').and.to.match(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/, \"Email is not in a valid format\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Message field is a non-empty string\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  \r",
+											"  pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"{{updatedTitle}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/users/23",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"users",
+										"23"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "3.2. Unsuccessful update scenario",
+					"item": [
+						{
+							"name": "3.2.1. Update user, no email",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"let uniqueValue = Date.now();\r",
+											"\r",
+											"let requestBody = JSON.parse(pm.request.body.raw);\r",
+											"\r",
+											"pm.request.body.raw = JSON.stringify(requestBody);\r",
+											"\r",
+											"let token = pm.collectionVariables.get(\"authToken\");\r",
+											"\r",
+											"if (!token) {\r",
+											"    console.error(\"No token found. Ensure to log in before making this request.\");\r",
+											"    throw new Error(\"No authToken variable found.\");\r",
+											"}\r",
+											"\r",
+											"pm.request.headers.add({\r",
+											"    key: \"Authorization\",\r",
+											"    value: `Bearer ${token}`\r",
+											"});\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 400\", function () {\r",
+											"  pm.expect(pm.response.code).to.equal(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response has the required fields\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"\r",
+											"  pm.expect(responseData).to.be.an('object');\r",
+											"  pm.expect(responseData.message).to.exist;\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Message is a non-empty string\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  \r",
+											"  pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response time is less than 500ms\", function () {\r",
+											"  pm.expect(pm.response.responseTime).to.be.below(500);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/users/22",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"users",
+										"22"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.2.2. Update with no existing user",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"let uniqueValue = Date.now();\r",
+											"\r",
+											"let baseEmail = `updated_email_${uniqueValue}@gmail.com`;\r",
+											"\r",
+											"pm.collectionVariables.set(\"updatedEmail\", baseEmail);\r",
+											"\r",
+											"let requestBody = JSON.parse(pm.request.body.raw);\r",
+											"\r",
+											"requestBody.email = baseEmail;\r",
+											"\r",
+											"pm.request.body.raw = JSON.stringify(requestBody);\r",
+											"\r",
+											"let token = pm.collectionVariables.get(\"authToken\");\r",
+											"\r",
+											"if (!token) {\r",
+											"    console.error(\"No token found. Ensure to log in before making this request.\");\r",
+											"    throw new Error(\"No authToken variable found.\");\r",
+											"}\r",
+											"\r",
+											"pm.request.headers.add({\r",
+											"    key: \"Authorization\",\r",
+											"    value: `Bearer ${token}`\r",
+											"});\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 404\", function () {\r",
+											"    pm.expect(pm.response.code).to.equal(404);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response has the required fields\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"\r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData.message).to.exist;\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response time is less than 200ms\", function () {\r",
+											"  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authToken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/users/50",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"users",
+										"50"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.2.3. Update with invalid token",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"let uniqueValue = Date.now();\r",
+											"\r",
+											"let baseEmail = `updated_email_${uniqueValue}@gmail.com`;\r",
+											"\r",
+											"pm.collectionVariables.set(\"updatedEmail\", baseEmail);\r",
+											"\r",
+											"let requestBody = JSON.parse(pm.request.body.raw);\r",
+											"\r",
+											"requestBody.email = baseEmail;\r",
+											"\r",
+											"pm.request.body.raw = JSON.stringify(requestBody);\r",
+											"\r",
+											"let token = pm.collectionVariables.get(\"authToken\");\r",
+											"\r",
+											"if (!token) {\r",
+											"    console.error(\"No token found. Ensure to log in before making this request.\");\r",
+											"    throw new Error(\"No authToken variable found.\");\r",
+											"}\r",
+											"\r",
+											"pm.request.headers.add({\r",
+											"    key: \"Authorization\",\r",
+											"    value: `Bearer ${token}`\r",
+											"});\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 403\", function () {\r",
+											"    pm.expect(pm.response.code).to.equal(403);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response has the required fields\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"\r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData.message).to.exist.and.to.be.a('string');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Message is a non-empty string\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response time is less than 500ms\", function () {\r",
+											"  pm.expect(pm.response.responseTime).to.be.below(500);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"{{updatedEmail}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/users/25",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"users",
+										"25"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "3.2.4. Update without token",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 401\", function () {\r",
+											"    pm.expect(pm.response.code).to.equal(401);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response has the required fields\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData.message).to.exist;\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response time is within an acceptable range\", function () {\r",
+											"  pm.expect(pm.response.responseTime).to.be.below(500);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Content-Type header is application/json\", function () {\r",
+											"  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Message field is a non-empty string\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/users/3",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"users",
+										"3"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "surnameToCreate",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "emailToCreate",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "passwordToCreate",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "titleToCreate",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "updatedEmail",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "userId",
+			"value": "",
+			"type": "string",
+			"disabled": true
+		},
+		{
+			"key": "authToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "emailToCreateForLogin",
+			"value": ""
+		},
+		{
+			"key": "surnameToCreateForLogin",
+			"value": ""
+		},
+		{
+			"key": "titleToCreateForLogin",
+			"value": ""
+		},
+		{
+			"key": "passwordToCreateForLogin",
+			"value": ""
+		},
+		{
+			"key": "emailToCreateForUpdate",
+			"value": ""
+		},
+		{
+			"key": "surnameToCreateForUpdate",
+			"value": ""
+		},
+		{
+			"key": "titleToCreateForUpdate",
+			"value": ""
+		},
+		{
+			"key": "passwordToCreateForUpdate",
+			"value": ""
+		},
+		{
+			"key": "updatedTitle",
+			"value": ""
+		}
+	]
+}

@@ -1,0 +1,768 @@
+{
+	"id": "9df8e5e2-4fbb-451e-b184-015d765f1e72",
+	"name": "authentication-db",
+	"timestamp": "2024-12-15T22:10:06.818Z",
+	"collection_id": "39912256-9af50adc-d181-4bc5-908d-d5ffd7b97073",
+	"folder_id": 0,
+	"environment_id": "0",
+	"totalPass": 66,
+	"delay": 0,
+	"persist": true,
+	"status": "finished",
+	"startedAt": "2024-12-15T22:10:04.524Z",
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "641b93a1-d950-4f03-915e-d24a56a82f78",
+			"name": "1.1.1. Register  new unique user",
+			"url": "http://localhost:3000/register",
+			"time": 171,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Response username and password matches registrated": true,
+				"Response status code is 201": true,
+				"Response has the required fields": true,
+				"Email is in a valid format": true,
+				"Created_at and updated_at are in valid date format": true,
+				"Response time is less than 500ms": true
+			},
+			"testPassFailCounts": {
+				"Response username and password matches registrated": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response has the required fields": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Email is in a valid format": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Created_at and updated_at are in valid date format": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 500ms": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				171
+			],
+			"allTests": [
+				{
+					"Response username and password matches registrated": true,
+					"Response status code is 201": true,
+					"Response has the required fields": true,
+					"Email is in a valid format": true,
+					"Created_at and updated_at are in valid date format": true,
+					"Response time is less than 500ms": true
+				}
+			]
+		},
+		{
+			"id": "480674cf-beae-4686-80b0-690d33799da0",
+			"name": "1.2.1. Register  new unique user, no email",
+			"url": "http://localhost:3000/register",
+			"time": 5,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request"
+			},
+			"tests": {
+				"Response status code is 400": true,
+				"Response has the required field - message": true,
+				"Response time is less than 500ms": true,
+				"Content-Type header is application/json": true,
+				"Response schema matches the expected structure": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 400": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response has the required field - message": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 500ms": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type header is application/json": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response schema matches the expected structure": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				5
+			],
+			"allTests": [
+				{
+					"Response status code is 400": true,
+					"Response has the required field - message": true,
+					"Response time is less than 500ms": true,
+					"Content-Type header is application/json": true,
+					"Response schema matches the expected structure": true
+				}
+			]
+		},
+		{
+			"id": "6ebc0051-3f20-4918-b91a-86c8f9d89028",
+			"name": "2.1.1. Register  new unique user for login",
+			"url": "http://localhost:3000/register",
+			"time": 81,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Response status code is 201": true,
+				"Response has the required fields": true,
+				"Email is in a valid format": true,
+				"Created_at and updated_at are in valid date format": true,
+				"Response time is less than 500ms": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response has the required fields": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Email is in a valid format": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Created_at and updated_at are in valid date format": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 500ms": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				81
+			],
+			"allTests": [
+				{
+					"Response status code is 201": true,
+					"Response has the required fields": true,
+					"Email is in a valid format": true,
+					"Created_at and updated_at are in valid date format": true,
+					"Response time is less than 500ms": true
+				}
+			]
+		},
+		{
+			"id": "82a2ca76-57d5-4b0f-834d-c369207889bb",
+			"name": "2.1.2. Login user",
+			"url": "http://localhost:3000/login",
+			"time": 85,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Response time is less than 200ms": true,
+				"Response has the required fields - message and token": true,
+				"Message is a non-empty string": true,
+				"Token is a non-empty string": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 200ms": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response has the required fields - message and token": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Message is a non-empty string": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Token is a non-empty string": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				85
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Response time is less than 200ms": true,
+					"Response has the required fields - message and token": true,
+					"Message is a non-empty string": true,
+					"Token is a non-empty string": true
+				}
+			]
+		},
+		{
+			"id": "c67656b8-871a-44b9-8a59-95846b824ebc",
+			"name": "2.2.1 Login user, no email",
+			"url": "http://localhost:3000/login",
+			"time": 5,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request"
+			},
+			"tests": {
+				"Response status code is 400": true,
+				"Response has the required field - message": true,
+				"Content-Type header is application/json": true,
+				"Response time is within an acceptable range": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 400": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response has the required field - message": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type header is application/json": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is within an acceptable range": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				5
+			],
+			"allTests": [
+				{
+					"Response status code is 400": true,
+					"Response has the required field - message": true,
+					"Content-Type header is application/json": true,
+					"Response time is within an acceptable range": true
+				}
+			]
+		},
+		{
+			"id": "3125a3ab-d156-4503-8e79-023d7f1c8af2",
+			"name": "2.2.2. Login with not existing user",
+			"url": "http://localhost:3000/login",
+			"time": 3,
+			"responseCode": {
+				"code": 401,
+				"name": "Unauthorized"
+			},
+			"tests": {
+				"Response status code is 401": true,
+				"Response has the required Content-Type header set to application/json": true,
+				"Response has the required fields": true,
+				"Message is a non-empty string": true,
+				"Response time is less than 500ms": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 401": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response has the required Content-Type header set to application/json": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response has the required fields": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Message is a non-empty string": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 500ms": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				3
+			],
+			"allTests": [
+				{
+					"Response status code is 401": true,
+					"Response has the required Content-Type header set to application/json": true,
+					"Response has the required fields": true,
+					"Message is a non-empty string": true,
+					"Response time is less than 500ms": true
+				}
+			]
+		},
+		{
+			"id": "8c2e2165-00ba-4b95-8560-8fffdfba3755",
+			"name": "3.1.1. Register  new unique user for Update",
+			"url": "http://localhost:3000/register",
+			"time": 145,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Response status code is 201": true,
+				"Response has the required fields": true,
+				"Email is in a valid format": true,
+				"Created_at and updated_at are in valid date format": true,
+				"Response time is less than 500ms": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response has the required fields": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Email is in a valid format": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Created_at and updated_at are in valid date format": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 500ms": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				145
+			],
+			"allTests": [
+				{
+					"Response status code is 201": true,
+					"Response has the required fields": true,
+					"Email is in a valid format": true,
+					"Created_at and updated_at are in valid date format": true,
+					"Response time is less than 500ms": true
+				}
+			]
+		},
+		{
+			"id": "94f0f29a-8d82-4087-9c12-3d03ffefe440",
+			"name": "3.1.2. Login user  for update",
+			"url": "http://localhost:3000/login",
+			"time": 98,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Response time is less than 200ms": true,
+				"Response has the required fields - message and token": true,
+				"Message is a non-empty string": true,
+				"Token is a non-empty string": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 200ms": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response has the required fields - message and token": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Message is a non-empty string": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Token is a non-empty string": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				98
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Response time is less than 200ms": true,
+					"Response has the required fields - message and token": true,
+					"Message is a non-empty string": true,
+					"Token is a non-empty string": true
+				}
+			]
+		},
+		{
+			"id": "f0d43d48-c7b6-4717-ac35-926f59ec3e66",
+			"name": "3.1.3. Update user email",
+			"url": "http://localhost:3000/users/22",
+			"time": 10,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Response time is within an acceptable range": true,
+				"Response has the required fields": true,
+				"Email is in a valid format": true,
+				"Password is a non-empty string": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is within an acceptable range": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response has the required fields": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Email is in a valid format": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Password is a non-empty string": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				10
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Response time is within an acceptable range": true,
+					"Response has the required fields": true,
+					"Email is in a valid format": true,
+					"Password is a non-empty string": true
+				}
+			]
+		},
+		{
+			"id": "c95b41c0-1439-486a-a6dc-4fb0978bf59c",
+			"name": "3.1.4. Update user title",
+			"url": "http://localhost:3000/users/23",
+			"time": 7,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response status code is 200": true,
+				"Response time is less than 300ms": true,
+				"Response has the required fields": true,
+				"Email is in a valid format": true,
+				"Message field is a non-empty string": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 300ms": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response has the required fields": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Email is in a valid format": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Message field is a non-empty string": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				7
+			],
+			"allTests": [
+				{
+					"Response status code is 200": true,
+					"Response time is less than 300ms": true,
+					"Response has the required fields": true,
+					"Email is in a valid format": true,
+					"Message field is a non-empty string": true
+				}
+			]
+		},
+		{
+			"id": "00f411d8-7eb7-4c6a-8dc8-5f539495a952",
+			"name": "3.2.1. Update user, no email",
+			"url": "http://localhost:3000/users/22",
+			"time": 7,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request"
+			},
+			"tests": {
+				"Response status code is 400": true,
+				"Response has the required fields": true,
+				"Message is a non-empty string": true,
+				"Response time is less than 500ms": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 400": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response has the required fields": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Message is a non-empty string": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 500ms": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				7
+			],
+			"allTests": [
+				{
+					"Response status code is 400": true,
+					"Response has the required fields": true,
+					"Message is a non-empty string": true,
+					"Response time is less than 500ms": true
+				}
+			]
+		},
+		{
+			"id": "a1da3ac5-c12c-4390-8291-3fe93382472c",
+			"name": "3.2.2. Update with no existing user",
+			"url": "http://localhost:3000/users/50",
+			"time": 7,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Response status code is 404": true,
+				"Response has the required fields": true,
+				"Response time is less than 200ms": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 404": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response has the required fields": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 200ms": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				7
+			],
+			"allTests": [
+				{
+					"Response status code is 404": true,
+					"Response has the required fields": true,
+					"Response time is less than 200ms": true
+				}
+			]
+		},
+		{
+			"id": "f8cc9b12-6b23-4011-a365-165de0c15ea1",
+			"name": "3.2.3. Update with invalid token",
+			"url": "http://localhost:3000/users/25",
+			"time": 4,
+			"responseCode": {
+				"code": 403,
+				"name": "Forbidden"
+			},
+			"tests": {
+				"Response status code is 403": true,
+				"Response has the required fields": true,
+				"Message is a non-empty string": true,
+				"Response time is less than 500ms": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 403": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response has the required fields": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Message is a non-empty string": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is less than 500ms": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				4
+			],
+			"allTests": [
+				{
+					"Response status code is 403": true,
+					"Response has the required fields": true,
+					"Message is a non-empty string": true,
+					"Response time is less than 500ms": true
+				}
+			]
+		},
+		{
+			"id": "da7ee027-c2d1-43b2-8b87-f33e310a2609",
+			"name": "3.2.4. Update without token",
+			"url": "http://localhost:3000/users/3",
+			"time": 5,
+			"responseCode": {
+				"code": 401,
+				"name": "Unauthorized"
+			},
+			"tests": {
+				"Response status code is 401": true,
+				"Response has the required fields": true,
+				"Response time is within an acceptable range": true,
+				"Content-Type header is application/json": true,
+				"Message field is a non-empty string": true
+			},
+			"testPassFailCounts": {
+				"Response status code is 401": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response has the required fields": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response time is within an acceptable range": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type header is application/json": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Message field is a non-empty string": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				5
+			],
+			"allTests": [
+				{
+					"Response status code is 401": true,
+					"Response has the required fields": true,
+					"Response time is within an acceptable range": true,
+					"Content-Type header is application/json": true,
+					"Message field is a non-empty string": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 633,
+	"collection": {
+		"requests": [
+			{
+				"id": "641b93a1-d950-4f03-915e-d24a56a82f78",
+				"method": "POST"
+			},
+			{
+				"id": "480674cf-beae-4686-80b0-690d33799da0",
+				"method": "POST"
+			},
+			{
+				"id": "6ebc0051-3f20-4918-b91a-86c8f9d89028",
+				"method": "POST"
+			},
+			{
+				"id": "82a2ca76-57d5-4b0f-834d-c369207889bb",
+				"method": "POST"
+			},
+			{
+				"id": "c67656b8-871a-44b9-8a59-95846b824ebc",
+				"method": "POST"
+			},
+			{
+				"id": "3125a3ab-d156-4503-8e79-023d7f1c8af2",
+				"method": "POST"
+			},
+			{
+				"id": "8c2e2165-00ba-4b95-8560-8fffdfba3755",
+				"method": "POST"
+			},
+			{
+				"id": "94f0f29a-8d82-4087-9c12-3d03ffefe440",
+				"method": "POST"
+			},
+			{
+				"id": "f0d43d48-c7b6-4717-ac35-926f59ec3e66",
+				"method": "PUT"
+			},
+			{
+				"id": "c95b41c0-1439-486a-a6dc-4fb0978bf59c",
+				"method": "PUT"
+			},
+			{
+				"id": "00f411d8-7eb7-4c6a-8dc8-5f539495a952",
+				"method": "PUT"
+			},
+			{
+				"id": "a1da3ac5-c12c-4390-8291-3fe93382472c",
+				"method": "PUT"
+			},
+			{
+				"id": "f8cc9b12-6b23-4011-a365-165de0c15ea1",
+				"method": "PUT"
+			},
+			{
+				"id": "da7ee027-c2d1-43b2-8b87-f33e310a2609",
+				"method": "PUT"
+			}
+		]
+	}
+}
