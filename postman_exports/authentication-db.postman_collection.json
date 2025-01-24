@@ -56,7 +56,7 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.test(\"Response username and password matches registrated\"), function(){\r",
+											"pm.test(\"Response email, surname, title and password matches registrated\"), function(){\r",
 											"    responseData = pm.response.jsnon();\r",
 											"    registratedUsername = pm.collectionVariables.get(\"surnameToCreate\")\r",
 											"    registratedPassword = pm.collectionVariables.get(\"passwordToCreate\")\r",
@@ -656,6 +656,13 @@
 											"pm.test(\"Response time is less than 500ms\", function () {\r",
 											"  pm.expect(pm.response.responseTime).to.be.below(500);\r",
 											"});\r",
+											"\r",
+											"pm.test(\"Store user ID\", function() {\r",
+											"    const responseData = pm.response.json();\r",
+											"    const userId = responseData.user.id;\r",
+											"    pm.collectionVariables.set(\"userId\", userId); // Store the user ID in the collection variable\r",
+											"    console.log(`User ID saved: ${userId}`);\r",
+											"});\r",
 											""
 										],
 										"type": "text/javascript",
@@ -872,7 +879,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:3000/users/22",
+									"raw": "http://localhost:3000/users/{{userId}}",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -880,7 +887,7 @@
 									"port": "3000",
 									"path": [
 										"users",
-										"22"
+										"{{userId}}"
 									]
 								}
 							},
@@ -987,7 +994,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:3000/users/23",
+									"raw": "http://localhost:3000/users/{{userId}}",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -995,7 +1002,7 @@
 									"port": "3000",
 									"path": [
 										"users",
-										"23"
+										"{{userId}}"
 									]
 								}
 							},
@@ -1088,7 +1095,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:3000/users/22",
+									"raw": "http://localhost:3000/users/{{userId}}",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -1096,7 +1103,7 @@
 									"port": "3000",
 									"path": [
 										"users",
-										"22"
+										"{{userId}}"
 									]
 								}
 							},
@@ -1184,7 +1191,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:3000/users/50",
+									"raw": "http://localhost:3000/users/0",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -1192,7 +1199,7 @@
 									"port": "3000",
 									"path": [
 										"users",
-										"50"
+										"0"
 									]
 								}
 							},
@@ -1286,7 +1293,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:3000/users/25",
+									"raw": "http://localhost:3000/users/{{userId}}",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -1294,7 +1301,7 @@
 									"port": "3000",
 									"path": [
 										"users",
-										"25"
+										"{{userId}}"
 									]
 								}
 							},
@@ -1370,7 +1377,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:3000/users/3",
+									"raw": "http://localhost:3000/users/{{userId}}",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -1378,7 +1385,7 @@
 									"port": "3000",
 									"path": [
 										"users",
-										"3"
+										"{{userId}}"
 									]
 								}
 							},
@@ -1482,6 +1489,10 @@
 		},
 		{
 			"key": "updatedTitle",
+			"value": ""
+		},
+		{
+			"key": "userId",
 			"value": ""
 		}
 	]

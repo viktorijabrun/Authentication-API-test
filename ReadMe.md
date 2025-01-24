@@ -26,7 +26,24 @@ https://github.com/viktorijabrun/Authentication-API-test.git
 
 `npm install`
 
-#### 3. Start the server
+#### 3. Set Up PostgreSQL Database
+
+Ensure that you have PostgreSQL installed and running. Create a new database called authentication-db or modify the database name in the code.
+
+Execute the following SQL to create the users table:
+
+`CREATE TABLE IF NOT EXISTS users (
+  id SERIAL PRIMARY KEY,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  surname VARCHAR(255) NOT NULL,
+  title VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+`
+
+#### 4. Start the server
 
 `npm run dev`
 
@@ -36,7 +53,7 @@ https://github.com/viktorijabrun/Authentication-API-test.git
 
 - Open Postman.
 - Go to File > Import.
-- Import the collection JSON file provided in this repository.
+- Import the collection JSON file provided in this repository `.\postman_exports\authentication-db.postman_collection.json\`
 
 #### 2. Run the Tests:
 
