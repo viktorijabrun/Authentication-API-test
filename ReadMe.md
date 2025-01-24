@@ -1,4 +1,4 @@
-# User Authentication API
+# Authentication API with Postman Tests
 
 This is a Node.js application that provides user registration, login, and profile update functionalities using PostgreSQL as the database and JWT for authentication. The application allows users to register with their details, log in, and update their email and title.
 
